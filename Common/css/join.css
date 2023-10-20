@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+}
+
+
+div, input, textarea {
+    box-sizing: border-box;
+}
+
+.black-box {
+    background-color: black;
+    padding: 30px;
+}
+
+.white-box {
+    background-color: white;
+    padding: 10px;
+    width: 80%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.input-form {
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    width: 100%;
+}
+
+.input-form2 {
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    width: 100%;
+}
+
+.zipcd {
+    float: left;
+    width: 25%;
+    padding: 5px;
+}
+
+.name {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.general {
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.input-email {
+    float: left;
+    width: 75%;
+    padding: 4px;
+}
+
+.input-message {
+    float: left;
+    width: 100%;
+    padding: 4px;
+}
+
+.send-btn {
+    background-color: orange;
+    padding: 3px;
+    float: right;
+    width: 70px;
+    height: 30px;
+}
+
+.grid {
+    width: 400px;
+    margin: 0px auto;
+    background-color: white;
+    text-align: center;
+}
+

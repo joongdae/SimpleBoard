@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MemJoin</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link href="{% static '/css/default.css' %}" rel="stylesheet">
+    <link href="{% static '/css/join.css' %}" rel="stylesheet">
+    <script type="application/javascript">
+        $(document).ready(function () {
+
+            document.addEventListener('keydown', function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                };
+            }, true);
+
+            $('#btnSubmit').click(function () {
+                    if ($('#mysID').val() == '') {
+                        alert('ID없이 등록할수 없습니다.');
+                        return false;
+                    }
+
+                    if ($.trim($('#iPW1').val()) == '' || $.trim($('#iPW2').val()) == '') {
+                        alert('패스워드가 공백일수 없습니다.1');
+                        return false;
+                    }
+                    if ($.trim($('#iPW1').val()) != $.trim($('#iPW2').val())) {
+                        alert('2개의 패스워드가 틀립니다.');
+                        return false;
+                    }
+
+                    var msg = '회원을 등록하시겠습니까?';
+                    var result = confirm(msg);
+
+                    if (!result) {
+                        return false;
+                    }
+
+                      MemberJoin();
+                return false;
+
+                });
+
+                $('#mysID').change(function () {
+
+                    // alert($(this).val().length);
+                    if ($(this).val().length > 2) {
+
+                        let param = {'sID': $.trim($(this).val())};
+
+                        $.ajax({
+                        type: 'post',
+                        url: './Confirm1/',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        header: {
+                            'X-CSRFTOKEN': '{{ csrf_token }}'
+                        },
+                        timeout: 0,
+                        async: true,
+                        data: JSON.stringify(param),
+                        success: function (json) {
+                            console.log("data pass success", json);
+                            console.log("data pass success", json.msg);
+                             if (json.msg == 'enable') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '사용가능한 ID입니다.';
+                                } else if(json.msg == 'disable') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '이미사용중인 ID입니다.';
+                                }else if(json.msg == 'error') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '오류발생 ^ㅡ^;';
+                                }
+
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error');
+                            //console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                        return false;
+                    }
+                }).keydown(function(e){
+                    if(e.keyCode==13){
+
+                        if ($(this).val().length > 2) {
+
+                           let param = {'sID': $.trim($(this).val())};
+
+                          $.ajax({
+                            type: 'post',
+                             url: '',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            header: {
+                                'X-CSRFTOKEN': '{{ csrf_token }}'
+                            },
+                            timeout: 0,
+                            async: true,
+                            data: JSON.stringify(param),
+                            success: function (json) {
+                                console.log("data pass success", json);
+                                console.log("data pass success", json.msg);
+                                 if (json.msg == 'enable') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '사용가능한 ID입니다.';
+                                } else if(json.msg == 'disable') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '이미사용중인 ID입니다.';
+                                }else if(json.msg == 'error') {
+                                    document.getElementById("ID_EnableYN").innerHTML = '오류발생 ^ㅡ^;';
+                                }
+
+                            },
+                            error: function (xhr, errmsg, err) {
+                                console.log('Error');
+                                //console.log(xhr.status + ": " + xhr.responseText);
+                            }
+
+                        });
+
+                       }
+
+                        $("#iPW1").select();
+
+                        return false;
+                    }
+                }) ;
+
+                $('#iPW1').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iPW2").select();
+                        return false;
+                   }
+                });
+
+                  $('#iPW2').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iName").select();
+                        return false;
+                   }
+                });
+
+               $('#iName').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iBirthday").select();
+                        return false;
+                   }
+                });
+
+               $('#iBirthday').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iPhone").select();
+                        return false;
+                   }
+                });
+
+                $('#iPhone').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iAlias").select();
+                        return false;
+                   }
+                });
+
+                 $('#iAlias').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iAddr").select();
+                        return false;
+                   }
+                });
+
+                  $('#iAddr').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iZip").select();
+                        return false;
+                   }
+                });
+
+                $('#iZip').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iEmail").select();
+                        return false;
+                   }
+                });
+
+                $('#iEmail').keydown(function(e){
+                   if(e.keyCode==13){
+                       $("#iRemark").select();
+                        return false;
+                   }
+                });
+
+                $('#mysID').select();
+
+            }) ;
+
+         function MemberJoin() {
+
+            let iID = $.trim($('#mysID').val());
+            let iPW1 = $.trim($('#iPW1').val());
+            let iName = $.trim($('#iName').val());
+            let iAlias = $.trim($('#iAlias').val());
+            let iBirthday = $.trim($('#iBirthday').val());
+            let iAddr = $.trim($('#iAddr').val());
+            let iPhone = $.trim($('#iPhone').val());
+            let iRemark = $.trim($('#iRemark').val());
+
+            let param = {
+                'sID': iID,
+                'sPW': iPW1,
+                'sName': iName,
+                'sAlias': iAlias,
+                'sBirthday': iBirthday,
+                'sAddr': iAddr,
+                'sPhone': iPhone,
+                'sRemark': iRemark
+            };
+
+            $.ajax({
+                type: 'post',
+                url: 'Member_Insert/',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                header: {
+                    'X-CSRFTOKEN': '{{ csrf_token }}'
+                },
+                timeout: 0,
+                async: true,
+                data: JSON.stringify(param),
+                success: function (json) {
+                    //console.log("data pass success", json);
+                    console.log("data pass success", json.msg);
+                    if (json.msg == 'enable') {
+                        alert('정상등록되었습니다.');
+                        location.href = '/';
+                    } else if (json.msg == 'same_as') {
+                        alert(' 동일한 ID가 등록되어있습니다. \n\n 다른이름으로 등록바랍니다. ');
+                    } else if (json.msg == 'error') {
+                        alert(' 등록도중 오류가 발생하였습니다. ');
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error');
+                    //console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }
+
+        function GoFirst() {
+            location.href = "/";
+        }
+
+    </script>
+</head>
+<body>
+<div class="grid"><h1>Member Join</h1></div>
+<div class="black-box">
+    <div class="white-box">
+        <form id="form1" name="form1" method="post"  >
+            {% csrf_token %}
+            <div class="general">
+                <span>ID</span><input type="text" id="mysID" name="mysID" placeholder="Your ID" class="input-form" value="k12345">
+                <span id="ID_EnableYN" style="color:red;"></span>
+            </div>
+            <div class="name">
+                <span>PW</span> <input type="text" id="iPW1" name="iPW1" placeholder="Your PW" class="input-form">
+            </div>
+            <div class="name">
+                <span>PW Confirm</span>
+                <input type="text" placeholder="Your PW" id="iPW2" name="iPW2" class="input-form">
+            </div>
+            <div class="name">
+                <span> Name</span>
+                <input type="text" class="input-form" placeholder="Your Name" id="iName" name="iName" value="홍길동">
+            </div>
+            <div class="name">
+                <span> Birthday</span>
+                <input type="text" class="input-form" id="iBirthday" name="iBirthday" value="730108">
+            </div>
+            <div class="general">
+                <span>Your Phone</span>
+                <input type="text" name="iPhone" id="iPhone" placeholder="Phone_Num" class="input-form">
+            </div>
+            <div class="general">
+                <span> Alias </span>
+                <input type="text" class="input-form" id="iAlias" name="iAlias" value="JacKey222">
+            </div>
+            <div class="general">
+                <span> Address </span>
+                <input type="text" class="input-form" id="iAddr" name="iAddr" value="서울특별시 테스트동 123-57번지">
+            </div>
+            <div class="zipcd">
+                <span> ZIPCODE</span>
+                <input type="text" class="input-form" id="iZip" name="iZip" value="641234">
+            </div>
+
+            <div class="input-email" style="float:left;">
+                <span>Your Email</span>
+                <input type="email" id="iEmail" name="iEmail" placeholder="Eamil@example.com" class="input-form">
+            </div>
+
+            <div class="input-message">
+                <span>Remark</span>
+                <textarea id="iRemark" name="iRemark" class="input-form"> 여기에 비고를 적으시면 됩니다. </textarea>
+            </div>
+            <div>
+                <button type="button" class="send-btn" style="width1:00px;" onclick="return GoFirst();">To Login
+                </button>
+                <button class="send-btn" id="btnSubmit" >Join</button>
+            </div>
+            <div style="clear: both;"></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

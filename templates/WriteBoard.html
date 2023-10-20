@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <title> 글쓰기 </title>
+    <link href="{% static '/css/default.css' %}" type="text/css" rel="stylesheet"/>
+    <style>
+
+        .grid {
+            width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            text-align: center;
+        }
+    </style>
+    <script scr="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="application/javascript">
+
+        $(document).ready(function () {
+            let sID = '{{ myID }}';
+            $('#iID').val(sID);
+        });
+
+        function GoFirst() {
+            location.href = './List/';
+        }
+
+        function preSend() {
+            if ($.trim($('#iTitle').val()) == '') {
+                alert('제목을 입력하세요.');
+                return false;
+            }
+
+            if ($.trim($('#iContent').val()) == '') {
+                alert('내용을 입력하세요.');
+                return false;
+            }
+
+            var msg = '당신이 쓴글을 등록하시겠습니까?';
+            var result = confirm(msg);
+
+            if (!result) {
+                return false;
+            }
+
+            var form = document.getElementById("form1");
+
+            form.action = "./Board_Insert/";
+            // form.mothod = "post";
+            form.submit();
+            return false;
+        }
+    </script>
+</head>
+<body>
+<h1>게시판쓰기 입니다.</h1>
+
+<div class="grid"><h1>글쓰기</h1></div>
+<div class="black-box">
+    <div class="white-box">
+        <form  id="form1"  method="post" >
+            <div class="grid">
+                <table border="0" cellpadding="0" cellspacing="0" class="condition" style="width:100%;">
+                    <tr>
+                        <th>아이디</th>
+                        <td><input type="text" id="iID" name="iID" placeholder="myID" readonly="readonly" class="input-form" style="width:90%;"
+                                   value=""></td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" id="iTitle" name="iTitle" placeholder="Title" class="input-form" style="width:90%;"
+                                   value=""></td>
+                    </tr>
+                    <tr>
+                        <th>글내용</th>
+                        <td>  <textarea name="iContent" class="input-form" id="iContent"   style="text-align:left;width:90%;height:300px;padding:5px;" ></textarea></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                             <button type="button" class="send-btn" onclick="return GoFirst();">to_List</button>
+                             <button type="submit" class="send-btn" onclick="return preSend();">Save</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

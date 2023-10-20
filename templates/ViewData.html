@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static '/css/default.css' %}" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+    <style>
+        th, td {
+            padding: 10px 15px;
+        }
+        .grid {
+            width: 650px;
+            margin: 50px auto;
+            background-color: white;
+            text-align: center;
+        }
+        .grid2 {
+            display: flex;
+            width: 220px;
+            margin: 10px auto;
+            background-color: white;
+            text-align: center;
+        }
+         .grid3 {
+            display: flex;
+            width: 70px;
+            margin: 10px auto;
+            background-color: white;
+            text-align: center;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            let tempID = '{{ sID }}';
+            let tempID2 = '{{ BoardData.mid }}';
+
+            if (tempID == tempID2) {
+                $('#div2').show();
+                $('#div1').hide();
+            }else{
+                $('#div1').show();
+                $('#div2').hide();
+            }
+        }
+
+        function Previous() {
+            //location.href = "./../../";
+            location.href = '{% url 'BoardList:BoardListLoad' %}';
+        }
+
+        function ItemSave() {
+            let msg='저장하시겠습니까?';
+            let result = confirm(msg);
+            if(!result){
+                return false;
+            }
+
+            var form = document.getElementById("form1");
+
+            form.action = "./../../ItemSave/";
+            form.mothod = "post";
+            form.submit();
+        }
+
+        function ItemDelete() {
+            let msg='삭제 하시겠습니까?';
+            let result = confirm(msg);
+            if(!result){
+                return false;
+            }
+            location.href = "./../../Itemdelete/{{ BoardData.boardno }}";
+        }
+
+    </script>
+</head>
+<body>
+<div class="grid" style="background-color: white">
+    <form id="form1" action="" method="post" >
+
+        <table class="tbs1" cellspacing="0" cellpadding="0" width="100%" border="0">
+             <tr>
+                <th style="width:300px;">
+                    &nbsp;&nbsp;<b>조횟수</b></th>
+                <td style="width:500px;"><input type="text" name="iCount" id="iCount" style="text-align: center;width:400px;height:30px;padding:5px;" value="{{ BoardData.boardcount }}" ></td>
+            </tr>
+            <tr>
+                <th style="width:300px;">
+                    &nbsp;&nbsp;<b>boardNo</b></th>
+                <td style="width:500px;"><input type="text" name="iNum" id="iNum" style="text-align: center;width:400px;height:30px;padding:5px;" value="{{ BoardData.boardno }}" ></td>
+            </tr>
+            <tr>
+                <th>
+                    &nbsp;&nbsp;<b>boardTitle(제목)</b></th>
+                <td><input type="text" style="text-align: center;width:400px;height:30px;padding:5px;" class="input-form" name="iTitle"  value="{{ BoardData.boardtitle }}"></td>
+            </tr>
+            <tr>
+                <th>
+                    &nbsp;&nbsp;<b>작성자</b></th>
+                <td><input type="text" name="iID" style="text-align: center;width:400px;height:30px;padding:5px;" readonly="readonly" class="input-form"
+                                 value="{{ BoardData.mid }} "></td>
+            </tr>
+            <tr>
+                <th>
+                    &nbsp;&nbsp;<b>내용 </b></th>
+                <td><textarea type="text" name="iContent" style="text-align:left;width:400px;height:200px;padding:5px;" W class="input-form">{{ BoardData.boardcontent}}</textarea></td>
+            </tr>
+            <tr>
+                <th>
+                    &nbsp;&nbsp;<b>저장일 </b></th>
+                <td><input type="text" style="text-align: center;width:400px;height:30px;padding:5px;" class="input-form"
+                                 readonly="readonly" value="{{ BoardData.boarddate|date:'Y-m-d H:i' }}"></td>
+            </tr>
+        </table>
+    </form>
+    <div id="div1" class="grid3">
+        <img src="{% static '/img/previous.png' %}" style="cursor:pointer" onclick="return Previous();" alt="">
+    </div>
+    <div id="div2" class="grid2" style="display:none">
+        <img src="{% static '/img/previous.png' %}" style="cursor:pointer" onclick="return Previous();" alt="">&nbsp;&nbsp;
+        <img src="{% static '/img/diskette_save.png' %}" id="imgSave"  onclick="return ItemSave();" style="cursor:pointer;" alt="">&nbsp;&nbsp;
+        <img src="{% static '/img/trash.png' %}"  id="imgDelete" onclick="return ItemDelete();"   style="cursor:pointer;" alt="">
+    </div>
+</div>
+</body>
+</html>
